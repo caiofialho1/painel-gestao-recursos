@@ -1,0 +1,131 @@
+/* Design System KW Brasil aplicado ao painel (tokens em kw/tokens.css, origem: _KW Brasil/00 - Projeto KWS/_Design_System_KW_Brasil).
+   Carregado por último: apenas redefine cor, tipografia, bordas e densidade. Arial 12 px, cantos de 2 a 4 px, verde KW como primária, âmbar como acento. */
+:root{--kw-pex:var(--amber-400);--kw-pex-text:var(--accent-text);--kw-app:var(--success)}
+html{font-family:var(--font-sans)}
+body{background:var(--surface-raised);color:var(--ink);font:var(--text-body)}
+button,input,select,label,th,td,dialog,table,textarea{font-family:var(--font-sans)}
+h1,h2,h3{font-family:var(--font-sans)}
+
+/* Cabeçalho em estilo banner */
+header.kw-banner{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-6);background:var(--gradient-header);color:var(--on-primary);border:0}
+.kw-logo{display:block;height:34px;width:auto}.kw-div{width:1px;align-self:stretch;background:var(--on-dark-line)}
+.kw-banner h1{margin:0;font:var(--text-heading-1);color:var(--on-primary)}.kw-banner h1 #pageTitle{color:var(--amber-300)}
+.kw-sub{margin:2px 0 0;font:var(--text-body-sm);color:var(--green-100);display:flex;align-items:center;gap:8px}.kw-sub i{width:5px;height:5px;border-radius:50%;background:var(--amber-400);display:inline-block}
+
+/* Faixa de navegação */
+.tabs{position:sticky;top:0;z-index:20;display:flex;gap:0;margin:0 0 var(--space-4);padding:0 var(--space-6);background:var(--band);border:0}
+.tabs button{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 var(--space-4);border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:var(--on-band);font:var(--text-label)}
+.tabs button:hover{background:var(--on-dark-fill)}.tabs button[aria-selected="true"]{background:var(--on-dark-fill);color:var(--on-band);border-bottom-color:var(--accent);font-weight:700}
+.tabs button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+main{padding:0 var(--space-6) var(--space-6)}
+
+/* Botões e campos */
+button{border:1px solid var(--border);background:var(--panel-brand);color:var(--ink);border-radius:var(--radius-md);min-height:var(--control-h);font:var(--text-label)}
+button:hover{background:var(--primary-subtle)}button.primary,#connectSb{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}button.primary:hover{background:var(--primary-hover)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+input,select{min-height:var(--control-h);border:1px solid var(--neutral-500);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink);font:var(--text-body)}
+label{color:var(--ink-muted);font:var(--text-label)}
+
+/* Painéis: borda de 1 px, cantos de 4 px, sombra mínima */
+.filters,.side-kpi,.items-panel,.map-panel,.pex-panel,.ranking-panel,.report-layout>section,.kpi-band{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+.filters h2,.heading h2,.kpi-chart h3,.pi-sec h3{font:var(--text-card-title);color:var(--ink)}
+.heading small,.kpi-chart h3 small,.summary,.muted,#mCaption,#pexCaption{color:var(--ink-muted);font:var(--text-web-note)}
+.heading{border-bottom:1px solid var(--border)}
+.filters{background:var(--surface)}
+
+/* Tabelas: cabeçalho em verde escuro, hierarquia por peso, linhas compactas */
+thead th,.items-table thead th,.detail-table thead th{background:var(--band);color:var(--on-band);font:var(--text-label);border-color:var(--on-dark-line)}
+.items-table th,.items-table td{padding:2px 8px;font:var(--text-web-table)}.items-table td{height:var(--row-h)}.items-table tbody td+td{border-left:1px solid var(--neutral-100)}
+.items-table tbody tr:nth-child(even){background:var(--surface-raised)}.items-table tbody tr:hover{background:var(--primary-subtle)}.items-table tbody tr.is-active{background:var(--green-100)}
+tr.grp td,.grp{background:var(--primary-subtle);color:var(--green-900);font:var(--text-grid-wbs)}
+.items-table td small{color:var(--ink-muted)}
+.thumb{width:40px;height:var(--row-h);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--neutral-100)}.items-table th:first-child{width:56px}
+.pex-panel table th{background:var(--band)}
+
+/* Cores de dados: quantidade PEX x cadastrada, diferença, aderência (sucesso ≥85%, atenção 50–85%, perigo <50%) */
+.v-pex{color:var(--kw-pex-text)}.v-app{color:var(--kw-app)}.v-neg{color:var(--danger)}
+.items-table td.qv,.qv{color:var(--kw-app);font-weight:700}
+.t-ok{color:var(--success)}.t-mid{color:var(--accent-text)}.t-low{color:var(--danger)}.t-na{color:var(--ink-muted)}
+.f-ok{background:var(--success)}.f-mid{background:var(--amber-500)}.f-low{background:var(--danger)}.f-na{background:var(--neutral-300)}
+.gauge.t-ok{color:var(--success)}.gauge.t-mid{color:var(--amber-500)}.gauge.t-low{color:var(--danger)}.gauge span{color:var(--ink);background:var(--surface)}.gauge{background:conic-gradient(currentColor var(--deg),var(--neutral-100) 0)}
+.bar-track{background:var(--neutral-100);border-radius:var(--radius-sm)}.bar-fill{border-radius:var(--radius-sm)}.bar-sub,.bar-label{color:var(--ink)}.bar-sub{color:var(--ink-muted)}
+.bar-row{border-color:var(--neutral-100)}
+.v-pex-bg,.hb-fill.p,.hist-bar.p{background:var(--kw-pex)}.v-app-bg,.hb-fill.a,.hist-bar.a{background:var(--kw-app)}.hb-val.p,.hist-bar.p span{color:var(--kw-pex-text)}.hb-val.a,.hist-bar.a span{color:var(--kw-app)}
+.hh-name{color:var(--ink)}.hh-axis>div,.hist-leg,.hist-opt{color:var(--ink-muted)}.hh-row{border-color:var(--neutral-100)}.hh-grid i{border-color:var(--neutral-200)}
+.cov b,.pex-panel .cov i b{background:var(--success)}
+
+/* Indicadores: altura única, rótulo / valor / nota */
+.kpi{min-height:var(--kpi-h);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);justify-content:space-between}
+.kpi small{font:var(--text-web-label);color:var(--ink-muted)}.kpi b{font:var(--text-kpi-value)}.kpi em{font:var(--text-web-note);color:var(--ink-muted)}.kpi-gauge{min-height:var(--kpi-h);justify-content:flex-start}
+.kpi b .of{color:var(--ink-muted);font:var(--text-body)}
+
+/* Mapa e diálogos */
+#map{border-radius:0 0 var(--radius-md) var(--radius-md)}
+dialog{border:1px solid var(--border);border-radius:var(--radius-md);color:var(--ink);box-shadow:var(--shadow-md)}dialog::backdrop{background:rgba(24,62,42,.55)}
+#photoDialog{border-radius:var(--radius-md)}.pd-head{background:var(--panel-brand);border-bottom:1px solid var(--border);border-radius:var(--radius-md) var(--radius-md) 0 0;color:var(--ink)}
+#photoTitle{font:var(--text-heading-1);color:var(--ink)}#photoTitle small{font:var(--text-body-sm);color:var(--ink-muted)}
+.pd-tag{background:var(--green-100);color:var(--green-900);border-radius:var(--radius-sm)}
+.pg-main{border-radius:var(--radius-md);background:var(--neutral-900)}.pg-main img{background:var(--neutral-900)}.pg-main figcaption{background:var(--neutral-800);color:var(--neutral-100)}
+.pg-thumbs button{border-radius:var(--radius-sm)}.pg-thumbs button.on{border-color:var(--accent)}
+.pi-sec{border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}.pi-sec h3{color:var(--primary);text-transform:none;letter-spacing:0}.pi-sec dt{color:var(--ink-muted)}.pi-sec dd{color:var(--ink)}
+.pg-empty{border-color:var(--border);color:var(--ink-muted);border-radius:var(--radius-md)}
+#photoClose{border-radius:var(--radius-md);color:var(--ink)}
+
+/* Rodapé e conexão */
+footer,#connection{color:var(--ink-muted)}
+
+/* PEX em âmbar (texto em amber-700 por contraste) */
+.hb-total{background:var(--amber-100);border-color:var(--amber-500)}
+.hb-total{border:0;background:var(--amber-400)}
+.hb-total{border:0;background:var(--amber-200)}.v-pex-bg{background:var(--amber-200)}
+.hb-total{border:0;background:var(--amber-100)}.v-pex-bg{background:var(--amber-100);box-shadow:inset 0 0 0 1px var(--amber-300)}
+.hb-total{border:0;background:var(--green-100)}.v-pex-bg{background:var(--green-100);box-shadow:inset 0 0 0 1px var(--green-300)}
+/* Histograma: nomes em uma linha e linhas de grade verticais sobre as barras */
+.hh-axis,.hh-row{grid-template-columns:150px minmax(0,1fr)}
+.hh-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:16px}
+.hb-over .hh-grid{inset:-4px 0;z-index:2;pointer-events:none}.hb-over .hh-grid i{border-left:1px solid var(--neutral-400);opacity:.55}
+.hb-over .hh-grid i:first-child{border-left-color:var(--neutral-700);opacity:1}
+.hh-row{padding:4px 0}
+.hh-axis,.hh-row{grid-template-columns:176px minmax(0,1fr)}.hb-lbl .v-pex{color:var(--ink-muted)}
+/* Linhas de grade contínuas: uma camada única sobre todas as linhas do gráfico */
+.hist{position:relative}.hh-vgrid{position:absolute;left:184px;right:126px;top:18px;bottom:0;pointer-events:none;z-index:3}
+.hh-vgrid i{position:absolute;top:0;bottom:0;border-left:1px solid var(--neutral-400);opacity:.55}.hh-vgrid i:first-child{border-left-color:var(--neutral-700);opacity:1}
+.hh-vgrid i{opacity:.9;border-left-color:var(--neutral-500)}.hh-vgrid i:first-child{border-left-color:var(--neutral-900);opacity:1}
+.hh-vgrid i{opacity:.3;border-left-color:var(--neutral-400)}.hh-vgrid i:first-child{border-left-color:var(--neutral-700);opacity:.6}
+/* Títulos de painel com fundo verde claro */
+.heading,.pd-head{background:var(--green-50)}
+.filters h2,.kpi-chart h3{background:var(--green-50);padding:7px 10px;border-radius:var(--radius-sm);margin:0 0 8px}
+.kpi-chart h3{border-bottom:1px solid var(--green-100)}.filters h2{border-bottom:1px solid var(--green-100)}
+/* Dados do cadastro na ficha em azul forte */
+.pi-sec dd{color:#0a4fd4;font-weight:700}.pi-sec dd.wide{color:#0a4fd4;font-weight:600}
+.pi-sec dd,.pi-sec dd.wide{font-weight:400}
+/* Ficha do item: linhas de grade entre campos */
+.pi-sec dl{gap:0 0;border:1px solid var(--neutral-200);border-radius:var(--radius-sm);overflow:hidden}
+.pi-sec dt,.pi-sec dd{padding:5px 8px;border-bottom:1px solid var(--neutral-200)}
+.pi-sec dt{background:var(--surface-raised);border-right:1px solid var(--neutral-200)}
+.pi-sec dt:nth-last-of-type(1),.pi-sec dd:last-child{border-bottom:0}
+.pi-sec dd.wide{border-right:0}
+/* Ficha compacta */
+.pi-sec{padding:6px 8px}.pi-sec h3{margin:0 0 4px;line-height:16px}.photo-info{gap:6px}
+.pi-sec dt,.pi-sec dd{padding:2px 6px;line-height:16px;font-size:12px}
+/* Fotos de coordenadores e gestores maiores (cadastro por dia e ranking) */
+#rows{--row-height:46px}
+#rows .av{width:38px;height:38px;margin-right:10px}#rows .av-i{font-size:13px}
+#rows td:first-child b{display:flex;align-items:center}
+.rank-label .av{width:30px;height:30px;margin-right:9px}.rank-label .av-i{font-size:11px}
+.rank-label span{display:flex;align-items:center}
+.rank-label{align-items:center}
+
+/* Rótulo "Prazo" ao lado da linha vertical vermelha */
+.deadline::after{content:"Prazo";position:absolute;left:5px;top:50%;transform:translateY(-50%);font:700 10px/12px Arial,Helvetica,sans-serif;color:var(--danger);background:rgba(255,255,255,.9);padding:1px 4px;border-radius:2px;white-space:nowrap}
+.deadline.deadline-end::after{left:auto;right:5px}
+.deadline::after{background:none;padding:0;font-weight:400}
+.hh-name{text-align:right;padding-right:10px}
+.open-details{cursor:pointer}.open-details:hover{text-decoration:underline;text-decoration-color:var(--primary)}.open-details:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+/* Tabela de cadastro por dia sem a coluna Detalhes: o prazo individual passa a ser a última coluna */
+th:nth-child(4):last-child{width:140px}
+
+/* Carrossel de itens no diálogo da foto */
+.pd-head{align-items:center}#photoTitle{flex:1;min-width:0}
+.pd-nav{display:flex;align-items:center;gap:8px;margin-left:auto}.pd-nav button{width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-md)}
+.pd-nav button:disabled{opacity:.4;cursor:default}#pdPos{font:var(--text-label);color:var(--ink-muted);min-width:84px;text-align:center;white-space:nowrap}

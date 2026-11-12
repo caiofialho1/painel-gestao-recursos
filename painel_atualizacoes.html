@@ -1,0 +1,173 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KW | Inventário</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f9f8;color:#233b30;font:12px "Segoe UI",Arial,sans-serif}header{display:flex;align-items:center;gap:22px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5ebe7}header small{font-size:10px;letter-spacing:.8px;color:#738178}h1{font-size:19px;font-weight:600;margin:0}main{padding:16px 24px;max-width:1800px;margin:auto}.controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}label{display:block;font-size:11px;color:#65776b}input,select,button{font:inherit;color:inherit;background:white;border:1px solid #d8e1da;border-radius:6px;padding:7px 10px}input,select{display:block;margin-top:5px;max-width:100%;height:32px}button{cursor:pointer;height:32px}button:hover{background:#f0f5f2}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #20835c;outline-offset:2px}.primary{background:#1e684b;border-color:#1e684b;color:#fff}.primary:hover{background:#18573e}.controls label:has(#search){flex:1;min-width:170px}#search{width:100%}#connection{font-size:10px;color:#76857b;line-height:1.5;margin:9px 0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.summary{font-size:13px;margin:14px 0;color:#53685a}section{background:#fff;border:1px solid #e1e8e3;border-radius:8px;overflow:hidden}.heading{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #edf1ee}h2{font-size:14px;font-weight:600;margin:0}.heading small{font-size:10px;color:#86938b}#caption{display:none}.scroll{overflow:auto}table{border-collapse:collapse;table-layout:fixed;width:100%;min-width:960px}th,td{text-align:left;padding:2px 12px;height:var(--row-height,30px);border-bottom:1px solid #edf1ee;font-size:11px}th{background:#fff;color:#748579;font-weight:500;height:60px}th:first-child{width:245px}th:nth-child(2){width:94px}th:nth-child(4){width:125px}th:last-child{width:72px}td:first-child b{font-weight:500;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}td small{font-size:10px;color:#89968d;margin-left:5px}.total{font-size:13px;font-weight:600}tr:last-child td{border-bottom:0}tbody tr:hover{background:#fafcfb}.axis,.lane{position:relative;min-width:340px}.axis{height:51px}.lane{height:25px}.axis .week{position:absolute;top:0;height:19px;text-align:center;padding-top:2px;font-size:10px;background:#f5f8f6;border-left:3px solid white;color:#6a7c70;white-space:nowrap;overflow:hidden}.axis .day{position:absolute;top:23px;transform:translateX(-50%);text-align:center;font-size:9px;line-height:12px}.axis .day em{display:block;font-style:normal;font-size:8px;color:#97a399}.axis .day.is-today{color:#176344;font-weight:700}.axis .day.is-today em{color:#176344}.week-line{position:absolute;top:0;height:100%;border-left:1px solid #edf1ee;pointer-events:none}.day-grid{display:none}.calendar-bar{position:absolute;top:0;height:100%;border-right:1px solid white;pointer-events:none;border-radius:0;z-index:1}.calendar-past{background:#fceeee}.calendar-today{background:#dceee2}.calendar-future{background:#f0f2f1}.mark{position:absolute;top:3px;transform:translateX(-50%);min-width:18px;padding:3px 2px;text-align:center;font-size:10px;font-weight:600;border-radius:0;z-index:2}.mark.time-today,.mark.time-past{background:transparent;color:#204f38}.mark.time-future{background:transparent;color:#52665a}.today-line{position:absolute;top:0;height:25px;border-left:1px solid #86b29a;pointer-events:none}.deadline{position:absolute;top:0;height:25px;border-left:3px solid #c52f32;z-index:3;pointer-events:none}.row-deadline{height:23px;width:112px;font-size:10px;padding:2px 5px;margin:0;border-color:transparent;background:transparent}.row-deadline:hover,.row-deadline:focus{background:white;border-color:#c6d5cb}.past{color:#99613b}td button{font-size:10px;padding:3px 5px;background:transparent;border-color:transparent;color:#6a8070;height:25px}.legend{display:flex;align-items:center;justify-content:flex-end;gap:16px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid #edf1ee;font-size:10px;color:#6f8074}.legend span{white-space:nowrap}.key{display:inline-block;width:12px;height:5px;vertical-align:middle;margin-right:5px;border-radius:2px}.legend .due-key{display:inline-block;height:11px;border-left:1px dashed #ad793e;margin-right:6px;vertical-align:middle}footer{margin-top:10px;font-size:10px;color:#7c8c80;line-height:1.6}footer summary{cursor:pointer;display:list-item}footer p{max-width:110ch}dialog{border:1px solid #dce5df;border-radius:10px;padding:24px;width:550px;max-width:94vw;max-height:85vh}dialog::backdrop{background:#19362a66}.events{max-height:55vh;overflow:auto;margin-top:15px}.event{padding:12px 0;border-bottom:1px solid #e9eeea;line-height:1.6}.muted{color:#7c8c80}@media(max-width:700px){header{padding:12px 14px;display:block}header small{font-size:9px}header h1{margin-top:4px;font-size:18px}main{padding:12px}.controls{gap:8px}.controls label:has(#search){min-width:145px}.heading{padding:10px}.legend{justify-content:flex-start;gap:10px}footer{font-size:10px}}@media print{header{padding:8px 0}.controls,#connection,td button,footer{display:none}main{padding:0}.scroll{overflow:visible}table{min-width:0}th:first-child{width:175px}th:nth-child(4){width:105px}.axis,.lane{min-width:200px}.row-deadline{width:100px}}
+.deadline-tail{position:absolute;top:21px;height:0;border-top:2px dashed #c52f32;z-index:3;pointer-events:none}.legend .due-key{border-left:3px solid #c52f32;position:relative;width:14px}.legend .due-key::after{content:"";position:absolute;left:0;bottom:0;width:12px;border-top:2px dashed #c52f32}
+.calendar-bar.after-deadline{background-image:repeating-linear-gradient(135deg,transparent 0,transparent 5px,rgba(197,47,50,.25) 5px,rgba(197,47,50,.25) 6px)}
+
+.report-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}.report-layout>section{min-width:0}.ranking-panel{background:white;border:1px solid #e1e8e3;border-radius:8px;overflow:hidden}.ranking-panel .heading{align-items:start}.ranking-panel .heading small{display:block;margin-top:5px}#ranking{padding:5px 12px 10px}.rank-row{padding:7px 0;border-bottom:1px solid #f0f3f1}.rank-row:last-child{border:0}.rank-label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:10px;margin-bottom:4px}.rank-label span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank-label strong{font-size:12px;font-variant-numeric:tabular-nums}.rank-track{height:5px;background:#f2f5f3;border-radius:2px;overflow:hidden}.rank-bar{height:100%;background:#acd0b9;border-radius:2px}.rank-row:first-child .rank-bar{background:#4a946b}.rank-empty{font-size:11px;color:#7c8c80;padding:12px 0}@media(max-width:1100px){.report-layout{grid-template-columns:minmax(0,1fr)}#ranking{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}}@media(max-width:600px){#ranking{grid-template-columns:1fr}}@media print{.report-layout{grid-template-columns:minmax(0,1fr) 220px;gap:10px}.rank-row{break-inside:avoid}}
+
+/* Cabeçalhos na paleta verde KW. */
+header{background:#163f32;color:#fff;border-bottom-color:#163f32}header small{color:#c3d8cb}thead th{background:#163f32;color:#fff}thead th small{color:#c3d8cb}.axis .week{background:#245542;color:#fff;border-left-color:#163f32}.axis .day{color:#fff}.axis .day em{color:#c3d8cb}.axis .day.is-today{background:#dceee2;color:#163f32;border-radius:3px;padding:0 2px}.axis .day.is-today em{color:#163f32}
+
+/* Grade branca sobre o cabeçalho verde KW. */
+thead th{border-bottom:1px solid #fff}thead th+th{border-left:1px solid #fff}.axis .week{border-left:1px solid #fff;border-bottom:1px solid #fff}.axis .week:first-child{border-left:0}.axis .day{height:28px;border-left:1px solid rgba(255,255,255,.7);padding-top:2px}.axis .day em{line-height:11px}
+
+.row-deadline,.row-deadline.past{color:#c52f32;font-weight:600}
+
+/* Gráfico lateral acompanha a altura do Gantt no desktop. */
+@media(min-width:1101px){.report-layout{align-items:stretch}.ranking-panel{display:flex;flex-direction:column;min-height:0}.ranking-panel .heading{flex:none}#ranking{flex:1;display:grid;grid-auto-rows:minmax(0,1fr)}.rank-row{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:5px 0}}
+
+#dialog{width:900px}#history{max-height:65vh}.detail-table{min-width:620px;table-layout:auto}.detail-table th,.detail-table td{height:auto;padding:9px 12px;white-space:normal;overflow-wrap:anywhere}.detail-table thead th{height:34px;position:sticky;top:0;z-index:1}.detail-table th:first-child{width:40%}.detail-table th:nth-child(2){width:17%}.detail-table th:nth-child(3){width:18%}.detail-table th:nth-child(4){width:15%;text-align:right}.detail-table th:last-child{width:10%}.detail-table td small{display:block;margin:4px 0 0;color:#7c8c80}.detail-table .detail-qty{text-align:right;font-variant-numeric:tabular-nums}.detail-table .detail-group th{background:#edf5ef;color:#234b36;font-weight:600;border-bottom:1px solid #d9e7dd}.detail-group small{font-weight:400;margin-left:10px;color:#63796a}
+
+.total.total-positive{color:#163f32}.total.total-zero{color:#c52f32}.row-deadline{color:#163f32;font-weight:600}.row-deadline.past{color:#c52f32}
+
+.row-deadline:valid,.row-deadline.past{color:#163f32}
+
+.row-deadline.deadline-empty{color:#c52f32}.row-deadline.deadline-defined{color:#163f32}
+
+/* Escala tipográfica única para o relatório. */
+:root{--font-content:12px;--font-caption:11px;--font-calendar:10px;--font-section:14px;--font-title:19px}
+body,input,select,button,label,th,td,.summary,.total,.row-deadline,td button,.rank-label,.rank-label strong,.rank-empty,.events{font-size:var(--font-content)}
+h1{font-size:var(--font-title)}h2{font-size:var(--font-section)}
+header small,#connection,.heading small,td small,th small,.legend,footer,.detail-group small,.detail-table td small{font-size:var(--font-caption)}
+.axis .week,.axis .day,.axis .day em,.mark{font-size:var(--font-calendar)}
+.rank-label strong,.total{font-weight:600}.rank-label{line-height:1.4}.axis .day,.axis .day em{line-height:12px}.mark{line-height:16px;padding:2px 0}
+
+/* Calendário sem faixas brancas horizontais entre as linhas. */
+#rows td:nth-child(3){padding-top:0;padding-bottom:0;border-bottom:0}
+#rows .lane{height:var(--row-height,30px)}
+#rows .mark{top:50%;transform:translate(-50%,-50%)}
+#rows .week-line,#rows .today-line,#rows .deadline{height:100%}
+
+/* Separadores de cada responsável continuam sobre o calendário. */
+#rows .lane::after{content:"";position:absolute;left:0;right:0;bottom:0;border-bottom:1px solid #dce4df;z-index:4;pointer-events:none}
+#rows tr:last-child .lane::after{display:none}
+
+/* Limites semanais visíveis sobre o preenchimento do calendário. */
+#rows .week-line{border-left:1px solid #b8cbbf;z-index:2;height:100%}
+#axis .axis .week{border-left:1px solid #fff}
+
+/* Alinhamento da tabela principal: nomes à esquerda, demais colunas ao centro. */
+.report-layout>section>.scroll>table>thead>tr>th:not(:first-child),#rows>tr>td:not(:first-child){text-align:center}
+.report-layout>section>.scroll>table>thead>tr>th:first-child,#rows>tr>td:first-child{text-align:left}
+#rows .row-deadline{margin-left:auto;margin-right:auto;text-align:center}
+#rows .row-deadline::-webkit-datetime-edit{text-align:center}
+
+/* Separadores verticais nas colunas da tabela. */
+#rows>tr>td+td{border-left:1px solid #dce4df}
+.detail-table tbody td+td{border-left:1px solid #dce4df}
+
+#dailyTotals th,#dailyTotals td{background:#edf5ef;color:#163f32;font-weight:600;border-top:2px solid #b8cbbf;border-bottom:0;height:30px;text-align:center}
+#dailyTotals th{width:auto;text-align:left;font-size:12px;padding:4px 12px}
+#dailyTotals td+td{border-left:1px solid #dce4df}#dailyTotals td:nth-child(3){padding:0 12px}
+.daily-total-lane{height:30px}.daily-total-value{position:absolute;top:0;height:30px;display:flex;align-items:center;justify-content:center;font-size:10px;font-variant-numeric:tabular-nums}
+
+.deadline-field{position:relative;display:block;margin:0;cursor:pointer}.deadline-field.is-pending>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c52f32;font-size:12px;font-weight:600;white-space:nowrap;pointer-events:none}.deadline-field.is-pending .row-deadline{opacity:0}.deadline-field.is-pending:focus-within .row-deadline{opacity:1}.deadline-field.is-pending:focus-within>span{visibility:hidden}
+
+/* Rodapé alinhado à grade e à tipografia do relatório. */
+#dailyTotals>tr>th,#dailyTotals>tr>td{height:32px;padding:0 12px;vertical-align:middle;font-size:var(--font-content);border-top:2px solid #b8cbbf;background:#edf5ef}
+#dailyTotals>tr>th{width:auto;white-space:nowrap;text-align:left;font-weight:600}
+#dailyTotals>tr>td{border-left:1px solid #dce4df;text-align:center}
+#dailyTotals .daily-total-lane{height:32px;min-width:340px}
+#dailyTotals .daily-total-value{height:32px;font-size:var(--font-calendar);font-weight:600;line-height:1}
+#dailyTotals .daily-positive{color:#163f32}#dailyTotals .daily-zero{color:#c52f32}
+#dailyTotals .week-line{height:100%;border-left:1px solid #b8cbbf;z-index:0}
+@media print{#dailyTotals .daily-total-lane{min-width:200px}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" onerror="console.warn('Leaflet indisponível: mapa desativado')">
+<link rel="stylesheet" href="kw/tokens.css"><link rel="stylesheet" href="mapa_recursos.css"><link rel="stylesheet" href="kw_ds.css">
+<header class="kw-banner"><img class="kw-logo" src="kw/kw-logo-branco.png" alt="KW Brasil" height="34"><span class="kw-div" aria-hidden="true"></span><div><h1>Gestão de Recursos <span id="pageTitle">Inventário</span></h1><p class="kw-sub">Inventário<i></i>PEX<i></i>Atualizações<i></i>Mapa</p></div></header><nav class="tabs" role="tablist" aria-label="Seções do relatório"><button role="tab" id="tabUpdates" aria-selected="true" data-view="updates"><img src="kw/cronograma-amarelo.svg" alt="" width="16" height="16">Inventário</button><button role="tab" id="tabMap" aria-selected="false" data-view="map"><img src="kw/recursos-amarelo.svg" alt="" width="16" height="16">Mapa e inventário de recursos</button></nav><main id="main">
+
+<div class="controls"><label>Tipo de CR<select id="category"><option value="obra">CRs de obra</option><option value="filial">Filiais</option><option value="">Todos os CRs</option></select></label><label>Agrupar por<select id="group"><option value="gestor">Coordenador</option><option value="cr">CR</option><option value="uf">Estado (UF)</option></select></label><label>Período<input id="month" type="month"></label><label>Buscar<input id="search" type="search" placeholder="Coordenador, CR ou estado"></label><button id="connect" class="primary">Conectar base do app</button><button id="connectGraph" class="primary" hidden>Entrar com Microsoft</button><button id="connectSb" class="primary" hidden>Entrar com e-mail KW</button><button id="reauthorize" class="primary" hidden>Autorizar acesso</button><button id="refresh">Atualizar agora</button><button onclick="window.print()">Imprimir</button></div>
+<p id="connection" role="status" class="muted">Base não conectada. Selecione a planilha atual do SharePoint sincronizada pelo OneDrive, nunca uma cópia de backup.</p><p class="summary" id="summary" aria-live="polite"></p>
+<div class="report-layout"><section><div class="heading"><div><h2>Cadastros por dia</h2><small id="caption"></small></div><small>Clique no prazo para editar</small></div><div class="scroll"><table><thead><tr><th id="groupTitle">Coordenador</th><th>Total cadastrado</th><th id="axis"></th><th>Prazo individual</th></tr></thead><tbody id="rows"></tbody><tfoot id="dailyTotals"></tfoot></table></div><div class="legend"><span><i class="key calendar-today"></i>Com registro</span><span><i class="key calendar-past"></i>Até hoje sem registro</span><span><i class="key calendar-future"></i>Dia futuro</span><span><i class="due-key"></i>Prazo</span><span>Número = cadastros no dia</span></div></section><aside class="ranking-panel" aria-labelledby="ranking-title"><div class="heading"><div><h2 id="ranking-title">Total por coordenador</h2><small>Toda a base · maior para menor</small></div></div><div id="ranking" aria-live="polite"></div></aside></div>
+<div id="viewMap" hidden>
+<div class="map-shell">
+<aside class="filters" aria-label="Filtros do mapa e inventário"><h2>Filtros</h2>
+<label>Buscar<input id="mSearch" type="search" placeholder="Item, TAG, modelo ou CR"></label>
+<label>Coordenador<select id="mCoord"><option value="">Todos os coordenadores</option></select></label>
+<label>Grupo<select id="mGroup"><option value="">Todos os grupos</option></select></label>
+<label>CR<select id="mCr"><option value="">Todos os CRs</option></select></label>
+<label>Agrupar tabela por<select id="mBy"><option value="">Sem agrupamento</option><option value="coord">Coordenador</option><option value="gestor">Gestor</option><option value="grupo">Grupo</option><option value="cr">CR</option><option value="equip">Equipamento</option></select></label>
+<button id="mClear">Limpar filtros</button><button id="mPhotos" title="Necessário apenas no modo OneDrive: escolha a pasta Fotos sincronizada">Pasta de fotos</button>
+</aside>
+<div class="map-main">
+
+<div class="map-layout">
+<section class="items-panel"><div class="heading"><div><h2>Itens cadastrados</h2><small id="mCaption"></small></div></div><div class="scroll"><table class="items-table"><thead><tr><th>Foto</th><th>Item</th><th>TAG</th><th>Qtd.</th><th>CR</th><th>Grupo</th><th>Atualizado por</th><th>Data de atualização</th></tr></thead><tbody id="mRows"></tbody></table></div><div class="more"><button id="mMore" hidden>Mostrar mais</button></div></section>
+<aside class="side"><section class="side-kpi"><div class="kpi-cards" id="kpiCards"></div><p class="summary" id="mSummary" aria-live="polite"></p><div class="kpi-top"><div class="kpi-chart"><h3>Aderência por estado <small>inventário ÷ PEX</small></h3><div id="kpiCr" class="bars"></div></div><div class="kpi-chart"><h3>Aderência por coordenador <small>inventário ÷ PEX</small></h3><div id="kpiCoord" class="bars"></div></div></div><div class="kpi-chart kpi-hist"><h3>Histograma por grupo de equipamentos <small>barra cheia = PEX (100%) · verde = cadastrado · rótulos em quantidade</small><span class="hist-leg"><i class="v-pex-bg"></i>PEX <i class="v-app-bg"></i>Cadastrado</span></h3><div id="kpiHist" class="hist"></div></div></section><section class="map-panel"><div class="heading"><div><h2>Mapa do Brasil</h2><small>Ponto = CR · chamada = unidades cadastradas e % do PEX · clique para filtrar</small></div></div><div id="map" role="region" aria-label="Mapa do Brasil com os recursos cadastrados"></div><div class="legend"><span><i class="sw sw-com"></i>Estado com cadastro</span><span><i class="sw sw-sem"></i>Com CR, sem cadastro</span><span><i class="sw sw-nao"></i>Sem CR</span><span><i class="dot dot-gps"></i>CR com GPS</span><span><i class="dot dot-uf"></i>CR aproximado pelo estado</span></div></section>
+<section class="pex-panel"><div class="heading"><div><h2>PEX × cadastrado</h2><small id="pexCaption"></small></div><select id="pexBy" aria-label="Comparar por"><option value="grupo">Por grupo</option><option value="equip">Por equipamento</option></select></div><div class="scroll"><table class="pex-table"><thead><tr><th id="pexKey">Grupo</th><th>PEX</th><th>Cadastrado</th><th>Dif.</th><th>Cobertura</th></tr></thead><tbody id="pexRows"></tbody><tfoot id="pexTotal"></tfoot></table></div><p class="pex-note" id="pexNote"></p></section></aside>
+</div>
+</div></div></div>
+<footer><details><summary>Sobre os dados e a conexão</summary><p>Fonte: BD_Inventario_KW.xlsx do app, sincronizada pelo OneDrive. Leitura automática a cada 30 segundos. A conexão é lembrada no navegador; autorize novamente se solicitado. Cada linha da tabela Equipamentos conta como um cadastro na data CriadoEm, atribuído ao coordenador do CR. Edições não são contadas. Hoje é destacado no eixo e usa o fuso de São Paulo. Prazos individuais ficam salvos neste navegador. O painel não altera a base.</p></details></footer></main>
+<dialog id="sbDialog"><h2>Entrar no painel</h2><p class="muted">Enviaremos um link de acesso ao seu e-mail corporativo (@kwbrasil.com.br).</p><input id="sbEmail" type="email" placeholder="nome.sobrenome@kwbrasil.com.br" autocomplete="email" style="width:100%"><p id="sbMsg" role="status" class="muted"></p><div style="display:flex;gap:8px;justify-content:flex-end"><button id="sbCancel">Cancelar</button><button id="sbSend" class="primary">Enviar link</button></div></dialog>
+<dialog id="pexDialog"><div style="display:flex;justify-content:space-between;gap:15px"><h2 id="pexTitle"></h2><button id="pexClose" aria-label="Fechar">✕</button></div><div id="pexItems" class="events"></div></dialog>
+<dialog id="photoDialog" aria-labelledby="photoTitle"><header class="pd-head"><h2 id="photoTitle"></h2><div class="pd-nav"><button id="pdPrev" type="button" aria-label="Item anterior" title="Item anterior (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span id="pdPos" aria-live="polite"></span><button id="pdNext" type="button" aria-label="Próximo item" title="Próximo item (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div><button id="photoClose" aria-label="Fechar">✕</button></header><div class="photo-split"><div id="photoGallery" class="gallery"></div><aside id="photoInfo" class="photo-info" aria-label="Detalhes do cadastro"></aside></div></dialog>
+<dialog id="dialog"><div style="display:flex;justify-content:space-between;gap:15px"><h2 id="name"></h2><button id="close" aria-label="Fechar">✕</button></div><div class="events" id="history"></div></dialog>
+<script>
+let BASE=[];
+const $=id=>document.getElementById(id),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'}).format(new Date());
+const fmt=d=>d?d.split('-').reverse().join('/'):'Não definido';
+let managers=[];
+let events=[],selected='',sourceConnected=false,deadlines={};
+function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!isNaN(Date.parse(d))&&new Date(d+'T12:00:00Z').toISOString().slice(0,10)===d}
+try{const saved=JSON.parse(localStorage.getItem('kw-gantt-deadlines-v2')||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved))deadlines=Object.fromEntries(Object.entries(saved).filter(([k,v])=>validDate(v)))}catch(e){}
+$('month').value=today().slice(0,7);
+const groupLabels={gestor:'Coordenador',cr:'CR',uf:'Estado (UF)'};
+function groups(){
+ const type=$('group').value,map=new Map(),category=$('category').value;
+ const base=BASE.filter(b=>!category||(b.categoria||'obra')===category),records=events.filter(e=>!category||(e.categoria||'obra')===category);
+ function add(value){value=value||'Não informado';if(!map.has(value))map.set(value,{key:type+':'+value,name:value,records:[],crs:new Set(),context:new Set()});return map.get(value)}
+ const linked=new Set(base.filter(b=>String(b.cr||'').trim()&&b.gestor&&b.gestor!=='Coordenador não informado').map(b=>b.gestor));
+ if(type==='gestor')linked.forEach(add);
+ for(const b of base){if(type==='gestor'&&!linked.has(b.gestor))continue;const g=add(b[type]);if(b.cr)g.crs.add(b.cr);if(type==='cr'&&b.obra)g.context.add(b.obra);if(type==='gestor'&&b.uf)g.context.add(b.uf)}
+ for(const e of records){if(type==='gestor'&&!linked.has(e.gestor))continue;const g=add(e[type]);g.records.push(e);if(e.cr)g.crs.add(e.cr)}
+ const q=$('search').value.trim().toLocaleLowerCase('pt-BR');
+ return [...map.values()].filter(g=>[g.name,...g.context,...g.crs].join(' ').toLocaleLowerCase('pt-BR').includes(q)).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+}
+function renderRanking(shown){
+ const linked=new Set(BASE.filter(b=>String(b.cr||'').trim()&&b.gestor&&b.gestor!=='Coordenador não informado').map(b=>b.gestor));
+ const records=shown.flatMap(g=>g.records).filter(e=>linked.has(e.gestor)),names=new Set(records.map(e=>e.gestor));
+ if($('group').value==='gestor')shown.forEach(g=>names.add(g.name));
+ else {const keys=new Set(shown.map(g=>g.name));BASE.filter(b=>keys.has(b[$('group').value])).filter(b=>linked.has(b.gestor)).forEach(b=>names.add(b.gestor));}
+ const totals=new Map([...names].map(n=>[n,0]));records.forEach(e=>totals.set(e.gestor,(totals.get(e.gestor)||0)+1));
+ const ranked=[...totals].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'pt-BR')),max=Math.max(1,...ranked.map(r=>r[1]));
+ $('ranking').innerHTML=ranked.map(([name,count])=>`<div class="rank-row" aria-label="${escape(name)}: ${count} cadastros"><div class="rank-label"><span title="${escape(name)}">${window.avatar?.(name)||''}${escape(name)}</span><strong>${count}</strong></div><div class="rank-track" aria-hidden="true"><div class="rank-bar" style="width:${count/max*100}%"></div></div></div>`).join('')||'<div class="rank-empty">'+(sourceConnected?'Nenhum coordenador na seleção.':'Conecte a base para ver os totais.')+'</div>';
+}
+function render(){const month=$('month').value||today().slice(0,7),[year,m]=month.split('-').map(Number),days=new Date(year,m,0).getDate(),shown=groups(),x=d=>(Number(d.slice(-2))-.5)/days*100;
+ const current=today(),dates=Array.from({length:days},(_,i)=>month+'-'+String(i+1).padStart(2,'0')),pastDays=dates.filter(d=>d<current).length,todayDays=dates.includes(current)?1:0;
+ const weeks=[];for(let i=0;i<days;i++){if(i===0||new Date(year,m-1,i+1).getDay()===1)weeks.push({start:i,end:i});else weeks.at(-1).end=i}
+ const dayLines=Array.from({length:days+1},(_,i)=>`<i class="day-grid" style="left:${i/days*100}%"></i>`).join('');
+ const weekLines=weeks.filter(w=>w.start>0).map(w=>`<i class="week-line" style="left:${w.start/days*100}%"></i>`).join('');
+ const rail=(counts,due)=>dates.map((d,i)=>`<div class="calendar-bar ${d>current?'calendar-future':counts[d]?'calendar-today':'calendar-past'} ${due&&d>due?'after-deadline':''}" data-date="${d}" style="left:${i/days*100}%;width:${100/days}%" title="${fmt(d)}: ${counts[d]||0} cadastro(s)"></div>`).join('')+(todayDays?`<i class="today-line" style="left:${x(current)}%" title="Hoje: ${fmt(current)}"></i>`:'');
+ renderRanking(shown);
+ $('groupTitle').textContent=groupLabels[$('group').value];
+ $('axis').innerHTML='<div class="axis" style="--days:'+days+'">'+weeks.map(w=>`<div class="week" style="left:${w.start/days*100}%;width:${(w.end-w.start+1)/days*100}%" title="Semana ${fmt(dates[w.start])} a ${fmt(dates[w.end])}">${w.start===w.end?String(w.start+1).padStart(2,'0'):String(w.start+1).padStart(2,'0')+'–'+String(w.end+1).padStart(2,'0')}</div>`).join('')+dates.map((d,i)=>`<span class="day ${d===current?'is-today':''}" style="left:${(i+.5)/days*100}%;width:${100/days}%" title="${['domingo','segunda','terça','quarta','quinta','sexta','sábado'][new Date(year,m-1,i+1).getDay()]}, ${fmt(d)}${d===current?' · Hoje':''}">${i+1}<em>${['D','S','T','Q','Q','S','S'][new Date(year,m-1,i+1).getDay()]}</em></span>`).join('')+'</div>';
+ $('rows').innerHTML=shown.map(g=>{const all=g.records,ev=all.filter(e=>e.date.startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date)),counts={},due=deadlines[g.key]||'';ev.forEach(e=>counts[e.date]=(counts[e.date]||0)+1);let line=due.startsWith(month)?`<i class="deadline${x(due)>88?' deadline-end':''}" style="left:${x(due)}%" title="Prazo individual: ${fmt(due)}"></i>`:'';return `<tr><td title="${escape([g.name,...g.context].join(' · '))} · clique para ver os registros"><b class="open-details" role="button" tabindex="0" data-key="${escape(g.key)}" aria-label="Ver registros de ${escape(g.name)}">${window.avatar?.(g.name)||''}${escape(g.name)}</b></td><td><span class="total ${all.length===0?'total-zero':'total-positive'}">${all.length}</span></td><td><div class="lane" style="--days:${days}">${dayLines}${rail(counts,due)}${weekLines}${Object.entries(counts).map(([d,c])=>`<span class="mark ${d>current?'time-future':'time-today'}" style="left:${x(d)}%" title="${fmt(d)}: ${c} cadastro(s)">${c}</span>`).join('')}${line}</div></td><td><label class="deadline-field ${due?'':'is-pending'}">${due?'':'<span>prazo pendente</span>'}<input type="date" class="row-deadline ${due?'deadline-defined':'deadline-empty'} ${due&&due<today()?'past':''}" aria-label="Prazo de ${escape(g.name)}" data-deadline="${escape(g.key)}" value="${due}"></label></td></tr>`}).join('')||`<tr><td colspan="4">${sourceConnected?'Nenhum resultado encontrado.':'Conecte a base do app para exibir os dados.'}</td></tr>`;
+ const dailyCounts={};shown.forEach(g=>g.records.forEach(e=>{if(e.date.startsWith(month))dailyCounts[e.date]=(dailyCounts[e.date]||0)+1}));
+ const grandTotal=shown.reduce((n,g)=>n+g.records.length,0);
+ $('dailyTotals').innerHTML=sourceConnected||shown.length?`<tr><th scope="row">Total de registros por dia</th><td><span class="total ${grandTotal===0?'total-zero':'total-positive'}">${grandTotal}</span></td><td><div class="lane daily-total-lane">${weekLines}${dates.map((d,i)=>`<span class="daily-total-value ${(dailyCounts[d]||0)===0?'daily-zero':'daily-positive'}" style="left:${i/days*100}%;width:${100/days}%" title="${fmt(d)}: ${dailyCounts[d]||0} registros">${dailyCounts[d]||0}</span>`).join('')}</div></td><td></td></tr>`:'';
+ const total=shown.reduce((s,g)=>s+g.records.filter(e=>e.date.startsWith(month)).length,0);$('summary').textContent=`${shown.length} ${$('group').value==='gestor'?'coordenadores':$('group').value==='cr'?'CRs':'estados'} · ${$('category').value==='filial'?'Filiais':$('category').value==='obra'?'CRs de obra':'Todos os CRs'} · ${total} cadastros no mês · ${month.split('-').reverse().join('/')}`;
+ $('caption').textContent='Uma linha por '+groupLabels[$('group').value];
+ const height=Math.max(24,Math.min(30,Math.floor((window.innerHeight-235)/Math.max(shown.length,1))));document.documentElement.style.setProperty('--row-height',height+'px');
+}
+function detailQuantity(value){if(value===undefined||value===null||String(value).trim()==='')return null;const s=String(value).trim(),n=Number(s.includes(',')?s.replace(/\./g,'').replace(',','.'):s);return Number.isFinite(n)&&n>=0?n:null}
+function detailTable(records){
+ const grouped=new Map(),number=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:3});
+ for(const e of records){const name=e.grupo||'Sem grupo';if(!grouped.has(name))grouped.set(name,[]);grouped.get(name).push(e)}
+ let html='<table class="detail-table"><thead><tr><th>Equipamento / modelo</th><th>TAG</th><th>CR</th><th>Quantidade</th><th>Unidade</th></tr></thead><tbody>';
+ for(const [name,items] of [...grouped].sort((a,b)=>a[0].localeCompare(b[0],'pt-BR'))){
+  const totals=new Map();items.forEach(e=>{const q=detailQuantity(e.quantidade);if(q!==null){const u=e.unidade||'Sem unidade';totals.set(u,(totals.get(u)||0)+q)}});
+  const subtotal=[...totals].map(([u,q])=>number.format(q)+' '+u).join(' · ');
+  html+=`<tr class="detail-group"><th colspan="5" scope="rowgroup">${escape(name)} <small>${items.length} cadastro(s)${subtotal?' · Total: '+escape(subtotal):''}</small></th></tr>`;
+  for(const e of items.slice().sort((a,b)=>(a.equipamento||'').localeCompare(b.equipamento||'','pt-BR')||(a.tag||'').localeCompare(b.tag||'','pt-BR'))){const q=detailQuantity(e.quantidade);html+=`<tr><td>${escape(e.equipamento||'Não informado')}${e.modelo?'<small>'+escape(e.modelo)+'</small>':''}</td><td>${escape(e.tag||'—')}</td><td>${escape(e.cr||'—')}</td><td class="detail-qty">${q===null?'—':number.format(q)}</td><td>${escape(e.unidade||'—')}</td></tr>`}
+ }
+ return html+'</tbody></table>';
+}
+function open(key){const g=groups().find(g=>g.key===key);if(!g){$('dialog').close();return}selected=key;$('name').textContent=g.name;$('history').innerHTML=`<p class="muted">${g.crs.size} CRs · ${g.records.length} cadastros · Prazo: ${fmt(deadlines[g.key])}</p>`+(g.records.length?detailTable(g.records):'<p class="muted">Nenhum cadastro encontrado.</p>');if(!$('dialog').open)$('dialog').showModal()}
+$('rows').onclick=e=>{const b=e.target.closest('[data-key]');if(b)open(b.dataset.key)};$('rows').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){const b=e.target.closest('b[data-key]');if(b){e.preventDefault();open(b.dataset.key)}}};
+$('rows').onchange=e=>{const input=e.target.closest('[data-deadline]');if(!input)return;const key=input.dataset.deadline,value=input.value;if(value&&!validDate(value))return;const next={...deadlines};if(value)next[key]=value;else delete next[key];try{localStorage.setItem('kw-gantt-deadlines-v2',JSON.stringify(next));deadlines=next;render()}catch(err){input.value=deadlines[key]||'';alert('Não foi possível salvar este prazo no navegador.')}};
+$('close').onclick=()=>$('dialog').close();['month','search','group','category'].forEach(id=>$(id).oninput=()=>{if($('dialog').open)$('dialog').close();render()});window.addEventListener('resize',render);
+render();
+</script><script src="config_sharepoint.js"></script><script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.28.1/lib/msal-browser.min.js" onerror="console.warn('MSAL indisponível: modo OneDrive')"></script><script src="config_supabase.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" onerror="console.warn('supabase-js indisponível')"></script><script src="fonte_supabase.js"></script><script src="fonte_app.js"></script><script src="fonte_supabase_ui.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" onerror="console.warn('Leaflet indisponível: mapa desativado')"></script><script src="brasil_uf.js"></script><script src="fotos_coord.js"></script><script src="pex_pstock.js" onerror="console.warn('PEX indisponível')"></script><script src="mapa_recursos.js"></script></html>
