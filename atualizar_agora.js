@@ -1,5 +1,5 @@
 /* "Atualizar agora": além de reler o banco, quando o painel roda pelo servidor local (iniciar_painel.cmd) executa
-   Excel → banco (migrar_excel.py) e PEX/fotos dos coordenadores → banco (enviar_painel_dados.py) e depois recarrega.
+   Excel → banco (migrar_excel.py) e PStock/fotos dos coordenadores → banco (enviar_painel_dados.py) e depois recarrega.
    Sem o servidor local (ex.: GitHub Pages) ou sem a chave service_role, apenas relê o banco. */
 'use strict';
 (() => {
@@ -13,7 +13,7 @@
   btn.onclick = async () => {
     if (btn.disabled) return;
     if (!(await disponivel())) { show(''); return original && original.call(btn); }
-    btn.disabled = true; btn.textContent = 'Atualizando…'; show('Executando Excel → banco e fotos/PEX → banco…', 'warn');
+    btn.disabled = true; btn.textContent = 'Atualizando…'; show('Executando Excel → banco, fotos novas e PEX/fotos dos coordenadores…', 'warn');
     try {
       await api('/api/sync/executar', { method: 'POST', headers: { 'X-KW-Sync': '1' } });
       let st; do { await wait(2500); st = await api('/api/sync/status'); } while (st.rodando);

@@ -94,7 +94,7 @@
     });
     setTimeout(() => { map.invalidateSize(); map.fitBounds(BRASIL, { paddingBottomRight: [150, 0] }); callouts(); }, 0);
   }
-  // Chamadas com linha: quantidade cadastrada e % em relação ao PEX do CR, empilhadas nas laterais do mapa.
+  // Chamadas com linha: quantidade cadastrada e % em relação ao PStock do CR, empilhadas nas laterais do mapa.
   function callouts() {
     if (!map || !callLayer) return;
     callLayer.clearLayers();
@@ -108,7 +108,7 @@
       y = Math.max(y, Math.min(o.pt.y - H / 2, sz.y - H - 6)); const lx = sz.x - W - 6;
       const p = o.p, tot = pex.get(p.cr) || 0, pc = tot ? p.qty / tot * 100 : null, t = tone(pc);
       L.polyline([[p.lat, p.lon], map.containerPointToLatLng(L.point(lx, y + H / 2))], { color: '#201e1e', weight: 1, opacity: .75, interactive: false }).addTo(callLayer);
-      const html = `<div class="co co-${t}" title="${escape(p.obra || p.cr)}"><b>${escape(p.cr)}</b><span><strong>${number.format(p.qty)}</strong> un · <strong>${pc === null ? 'sem PEX' : number.format(Math.round(pc)) + '%'}</strong>${pc === null ? '' : ' do PEX'}</span></div>`;
+      const html = `<div class="co co-${t}" title="${escape(p.obra || p.cr)}"><b>${escape(p.cr)}</b><span><strong>${number.format(p.qty)}</strong> un · <strong>${pc === null ? 'sem PStock' : number.format(Math.round(pc)) + '%'}</strong>${pc === null ? '' : ' do PStock'}</span></div>`;
       const mk = L.marker(map.containerPointToLatLng(L.point(lx, y)), { icon: L.divIcon({ className: 'co-wrap', html, iconSize: [W, H], iconAnchor: [0, 0] }), keyboard: false }).addTo(callLayer);
       mk.on('click', () => { $('mCr').value = p.cr; shown = 0; renderMapa(); });
       y += H + GAP;
@@ -157,7 +157,7 @@
   const tone = p => p === null ? 'na' : p >= 85 ? 'ok' : p >= 50 ? 'mid' : 'low';
   const pctTxt = p => p === null ? '—' : number.format(Math.round(p)) + '%';
   function bars(list, el, avatars) {
-    el.innerHTML = list.map(r => `<div class="bar-row" title="${escape(r.label)}: PEX ${number.format(r.pex)} · inventário ${number.format(r.app)}"><div class="bar-label"><span>${avatars ? avatar(r.label) : ''}${escape(r.label)}</span><strong class="t-${tone(r.pct)}">${pctTxt(r.pct)}</strong></div><div class="bar-track"><div class="bar-fill f-${tone(r.pct)}" style="width:${Math.min(100, r.pct || 0)}%"></div></div><div class="bar-sub"><b class="v-pex">${number.format(r.pex)}</b> PEX · <b class="v-app">${number.format(r.app)}</b> inventário</div></div>`).join('') || '<p class="muted">Sem dados.</p>';
+    el.innerHTML = list.map(r => `<div class="bar-row" title="${escape(r.label)}: PStock ${number.format(r.pex)} · inventário ${number.format(r.app)}"><div class="bar-label"><span>${avatars ? avatar(r.label) : ''}${escape(r.label)}</span><strong class="t-${tone(r.pct)}">${pctTxt(r.pct)}</strong></div><div class="bar-track"><div class="bar-fill f-${tone(r.pct)}" style="width:${Math.min(100, r.pct || 0)}%"></div></div><div class="bar-sub"><b class="v-pex">${number.format(r.pex)}</b> PStock · <b class="v-app">${number.format(r.app)}</b> inventário</div></div>`).join('') || '<p class="muted">Sem dados.</p>';
   }
   function kpis() {
     const sc = scope(true), pex = window.KW_PEX?.itens || [];
@@ -169,11 +169,11 @@
     const fin = l => l.map(r => ({ ...r, pct: pctOf(r.app, r.pex) }));
     const tot = crs.reduce((s, r) => ({ pex: s.pex + r.pex, app: s.app + r.app, n: s.n + r.n }), { pex: 0, app: 0, n: 0 });
     const pct = pctOf(tot.app, tot.pex), withApp = crs.filter(r => r.n).length, dif = tot.app - tot.pex;
-    $('kpiCards').innerHTML = `<div class="kpi kpi-gauge"><div class="gauge t-${tone(pct)}" style="--deg:${Math.min(100, pct || 0) * 3.6}deg"><span>${pctTxt(pct)}</span></div><div><small>Aderência geral</small><b class="t-${tone(pct)}">${pctTxt(pct)}</b><em>inventário ÷ PEX</em></div></div>
-      <div class="kpi"><small>Itens PEX (PStock)</small><b class="v-pex">${number.format(tot.pex)}</b><em>unidades em posse</em></div>
+    $('kpiCards').innerHTML = `<div class="kpi kpi-gauge"><div class="gauge t-${tone(pct)}" style="--deg:${Math.min(100, pct || 0) * 3.6}deg"><span>${pctTxt(pct)}</span></div><div><small>Aderência geral</small><b class="t-${tone(pct)}">${pctTxt(pct)}</b><em>inventário ÷ PStock</em></div></div>
+      <div class="kpi"><small>Itens PStock</small><b class="v-pex">${number.format(tot.pex)}</b><em>unidades em posse</em></div>
       <div class="kpi"><small>Itens cadastrados (inventário)</small><b class="v-app">${number.format(tot.app)}</b><em>${number.format(tot.n)} cadastros no app</em></div>
-      <div class="kpi"><small>Diferença</small><b class="${dif < 0 ? 'v-neg' : 'v-app'}">${dif > 0 ? '+' : ''}${number.format(dif)}</b><em>inventário − PEX</em></div>
-      <div class="kpi"><small>CRs com cadastro</small><b>${withApp} <span class="of">/ ${crs.length}</span></b><em>CRs com PEX ou inventário</em></div>`;
+      <div class="kpi"><small>Diferença</small><b class="${dif < 0 ? 'v-neg' : 'v-app'}">${dif > 0 ? '+' : ''}${number.format(dif)}</b><em>inventário − PStock</em></div>
+      <div class="kpi"><small>CRs com cadastro</small><b>${withApp} <span class="of">/ ${crs.length}</span></b><em>CRs com PStock ou inventário</em></div>`;
     const ufs = new Map();
     crs.forEach(r => { const u = ufs.get(r.uf) || ufs.set(r.uf, { label: r.uf, pex: 0, app: 0 }).get(r.uf); u.pex += r.pex; u.app += r.app; });
     bars(fin([...ufs.values()]).sort((a, b) => b.pex - a.pex || b.app - a.app), $('kpiCr'), false);
@@ -193,32 +193,32 @@
     const adh = r => r.pex ? r.app / r.pex * 100 : (r.app ? 100 : 0);
     const bar = () => '';
     el.innerHTML = `<div class="hh-axis" aria-hidden="true"><i></i><div>${ticks.map(t => `<span style="left:${t / max * 100}%">${t}%</span>`).join('')}</div></div>` +
-      list.map(r => `<div class="hh-row" title="${escape(r.g)}: PEX ${number.format(r.pex)} · cadastrado ${number.format(r.app)} (${number.format(Math.round(adh(r)))}% do PEX)"><div class="hh-name">${escape(r.g)}</div><div class="hh-bars"><div class="hb-over"><div class="hb-total" style="width:${r.pex || r.app ? 100 : 0}%"></div><div class="hb-fill a" style="width:${Math.min(100, adh(r))}%"></div></div><span class="hb-lbl"><b class="v-app">${number.format(r.app)}</b> / <b class="v-pex">${number.format(r.pex)}</b> <small>${r.pex ? number.format(Math.round(adh(r))) + '%' : 'sem PEX'}</small></span></div></div>`).join('') + `<div class="hh-vgrid" aria-hidden="true">${ticks.map(t => `<i style="left:${t / max * 100}%"></i>`).join('')}</div>`;
+      list.map(r => `<div class="hh-row" title="${escape(r.g)}: PStock ${number.format(r.pex)} · cadastrado ${number.format(r.app)} (${number.format(Math.round(adh(r)))}% do PStock)"><div class="hh-name">${escape(r.g)}</div><div class="hh-bars"><div class="hb-over"><div class="hb-total" style="width:${r.pex || r.app ? 100 : 0}%"></div><div class="hb-fill a" style="width:${Math.min(100, adh(r))}%"></div></div><span class="hb-lbl"><b class="v-app">${number.format(r.app)}</b> / <b class="v-pex">${number.format(r.pex)}</b> <small>${r.pex ? number.format(Math.round(adh(r))) + '%' : 'sem PStock'}</small></span></div></div>`).join('') + `<div class="hh-vgrid" aria-hidden="true">${ticks.map(t => `<i style="left:${t / max * 100}%"></i>`).join('')}</div>`;
   }
-  // PEX = referência do PStock (saldo + cautelas em posse), somente leitura, gerada por pstock/gerar_pex.py.
-  // Item PEX: [cr, produto, equipamento, grupo, tag, patrimônio, série, nf, qtd, origem(0=descrição,1=grupo PStock)].
+  // PStock = referência do PStock (saldo + cautelas em posse), somente leitura, gerada por pstock/gerar_pex.py.
+  // Item PStock: [cr, produto, equipamento, grupo, tag, patrimônio, série, nf, qtd, origem(0=descrição,1=grupo PStock)].
   function pexTable() {
     const pex = window.KW_PEX, mode = $('pexBy').value;
     $('pexKey').textContent = mode === 'equip' ? 'Equipamento' : 'Grupo';
-    if (!pex) { $('pexRows').innerHTML = '<tr><td colspan="5" class="muted">Dados PEX indisponíveis.</td></tr>'; $('pexTotal').innerHTML = ''; return; }
+    if (!pex) { $('pexRows').innerHTML = '<tr><td colspan="5" class="muted">Dados do PStock indisponíveis.</td></tr>'; $('pexTotal').innerHTML = ''; return; }
     const sel = $('mCr').value, crs = scope(false).crs, idx = mode === 'equip' ? 2 : 3;
     const map = new Map(), row = g => map.get(g) || map.set(g, { g, pex: 0, app: 0 }).get(g);
     pex.itens.filter(i => crs.has(i[0])).forEach(i => { row(i[idx]).pex += i[8] });
     events.filter(e => crs.has(e.cr)).forEach(e => { row(mode === 'equip' ? canon(e).tipo : canon(e).grupo).app += qty(e) });
     const list = [...map.values()].sort((a, b) => b.pex - a.pex || b.app - a.app || a.g.localeCompare(b.g, 'pt-BR'));
     const cell = r => { const d = r.app - r.pex, pct = r.pex ? Math.min(100, r.app / r.pex * 100) : (r.app ? 100 : 0); return `<td class="v-pex">${number.format(r.pex)}</td><td class="v-app">${number.format(r.app)}</td><td class="${d < 0 ? 'v-neg' : 'v-app'}">${d > 0 ? '+' : ''}${number.format(d)}</td><td><span class="cov"><i><b style="width:${pct}%"></b></i>${r.pex ? number.format(Math.round(r.app / r.pex * 100)) + '%' : '—'}</span></td>`; };
-    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row" data-pk="${escape(r.g)}" title="Ver itens PEX"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
+    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
     const t = list.reduce((s, r) => ({ pex: s.pex + r.pex, app: s.app + r.app }), { pex: 0, app: 0 });
     $('pexTotal').innerHTML = `<tr><th>Total</th>${cell(t)}</tr>`;
     const porRegra = pex.itens.filter(i => crs.has(i[0]) && i[9] === 0).length, total = pex.itens.filter(i => crs.has(i[0])).length;
     $('pexCaption').textContent = (sel ? 'CR ' + sel : 'Todos os CRs do app') + ' · clique na linha para ver os itens';
-    $('pexNote').textContent = `PEX = inventário do PStock em posse (saldo + cautelas), extraído em ${pex.geradoEm}, só como referência. Cada item do PStock foi classificado pela descrição (${porRegra} de ${total} por regra; o restante pelo grupo de origem) e recebeu nome canônico de equipamento; TAG, patrimônio, série e NF foram separados em colunas. Cadastros "Outro equipamento" do app são reclassificados pelas mesmas regras. Grupos sem correspondente no app (ferramentas manuais, EPC, materiais, locação) aparecem só no PEX. Planilha de conferência: pstock/PEX_classificado.xlsx. Regras: pstock/classificar_pex.py.`;
+    $('pexNote').textContent = `PStock = inventário do PStock em posse (saldo + cautelas), extraído em ${pex.geradoEm}, só como referência. Cada item do PStock foi classificado pela descrição (${porRegra} de ${total} por regra; o restante pelo grupo de origem) e recebeu nome canônico de equipamento; TAG, patrimônio, série e NF foram separados em colunas. Cadastros "Outro equipamento" do app são reclassificados pelas mesmas regras. Grupos sem correspondente no app (ferramentas manuais, EPC, materiais, locação) aparecem só no PStock. Planilha de conferência: pstock/PEX_classificado.xlsx. Regras: pstock/classificar_pex.py.`;
   }
   function pexItems(key) {
     const pex = window.KW_PEX, mode = $('pexBy').value, idx = mode === 'equip' ? 2 : 3, sel = $('mCr').value;
     const crs = scope(false).crs;
     const list = pex.itens.filter(i => crs.has(i[0]) && i[idx] === key).sort((a, b) => a[2].localeCompare(b[2], 'pt-BR') || a[1].localeCompare(b[1], 'pt-BR'));
-    $('pexTitle').textContent = `PEX · ${key}`;
+    $('pexTitle').textContent = `PStock · ${key}`;
     $('pexItems').innerHTML = `<p class="muted">${list.length} item(ns) · ${number.format(list.reduce((s, i) => s + i[8], 0))} unidades${sel ? ' · CR ' + sel : ''}</p><div class="scroll"><table class="detail-table pex-items"><thead><tr><th>Equipamento</th><th>Descrição PStock</th><th>TAG</th><th>Patrimônio</th><th>Série</th><th>NF</th><th>CR</th><th>Qtd.</th></tr></thead><tbody>${list.map(i => `<tr><td>${escape(i[2])}${mode === 'equip' ? '' : '<small>' + escape(i[3]) + '</small>'}</td><td>${escape(i[1])}</td><td>${escape(i[4] || '—')}</td><td>${escape(i[5] || '—')}</td><td>${escape(i[6] || '—')}</td><td>${escape(i[7] || '—')}</td><td>${escape(i[0])}</td><td class="detail-qty">${number.format(i[8])}</td></tr>`).join('')}</tbody></table></div>`;
     $('pexDialog').showModal();
   }
