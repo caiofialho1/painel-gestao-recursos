@@ -5,8 +5,8 @@
    por exemplo http://localhost:5501/painel/painel_atualizacoes.html (Live Server do VS Code).
    Com clientId vazio o painel continua usando o arquivo sincronizado pelo OneDrive. */
 window.KW_SHAREPOINT = {
-  clientId: '', // vazio = modo arquivo sincronizado. Reativar após aprovação do administrador: <ID do aplicativo>
-  tenantId: '',
+  clientId: '', // vazio = modo arquivo sincronizado. Reativar após aprovação do administrador: 8e6154c4-0fd4-404f-99a4-816818b06129
+  tenantId: 'fb3a27e6-c7fe-4f16-96c7-47a2afa7d41a',
   host: 'kwbrasil.sharepoint.com',
   sitePath: '/sites/APP_GestaoDeRecursos',
   file: 'BD_Inventario_KW.xlsx',

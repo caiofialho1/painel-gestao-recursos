@@ -7,6 +7,25 @@ window.SupabaseSource = (() => {
   const enabled = () => !!(C.url && C.anonKey && window.supabase);
   const s = v => (v === null || v === undefined ? '' : String(v));
 
+  // Indicador de sincronização do banco (Supabase).
+  const st = { logged: false, live: false, error: '', lastRead: null };
+  const fmt = d => new Date(d).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  function ago(d) {
+    const m = Math.max(0, Math.round((Date.now() - new Date(d).getTime()) / 60000));
+    if (m < 1) return 'agora'; if (m < 60) return 'há ' + m + ' min';
+    if (m < 1440) return 'há ' + Math.floor(m / 60) + ' h'; return 'há ' + Math.floor(m / 1440) + ' d';
+  }
+  function chip(id, state, text, title) { const el = $(id); if (!el) return; el.dataset.s = state; el.textContent = text; el.title = title || ''; }
+  function renderSync() {
+    const bar = $('syncBar'); if (!bar) return; bar.hidden = false;
+    if (!st.logged) chip('syncDb', 'off', 'Banco de dados: aguardando login', 'Entre com seu e-mail @kwbrasil.com.br.');
+    else if (st.error) chip('syncDb', 'err', 'Banco de dados: falha na leitura', st.error);
+    else if (!st.lastRead) chip('syncDb', 'warn', 'Banco de dados: lendo…');
+    else if (st.live) chip('syncDb', 'ok', 'Banco de dados: ao vivo · lido ' + fmt(st.lastRead), 'Alterações chegam automaticamente (Realtime).');
+    else chip('syncDb', 'warn', 'Banco de dados: leitura a cada 30 s · lido ' + fmt(st.lastRead), 'Tempo real indisponível; o painel consulta o banco periodicamente.');
+  }
+  setInterval(renderSync, 30000);
+
   async function all(table, order) {
     const rows = [];
     for (let from = 0; ; from += 1000) {
@@ -36,7 +55,9 @@ window.SupabaseSource = (() => {
       };
       await dadosFixos();
       AppSource.applyTables(tables, 'Supabase · tempo real');
+      st.error = ''; st.lastRead = new Date(); renderSync();
     } catch (e) {
+      st.error = e.message; renderSync();
       $('connection').textContent = 'Falha ao ler o Supabase: ' + e.message;
     } finally { busy = false; if (again) { again = false; load(); } }
   }
@@ -68,24 +89,39 @@ window.SupabaseSource = (() => {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'obras' }, soon)
       .subscribe(status => {
         const el = $('connection');
-        if (status === 'SUBSCRIBED') el.dataset.live = '1';
-        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') { el.dataset.live = ''; }
+        if (status === 'SUBSCRIBED') { el.dataset.live = '1'; st.live = true; }
+        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') { el.dataset.live = ''; st.live = false; }
+        renderSync();
       });
   }
   async function session() { return (await client.auth.getSession()).data.session; }
   async function start() {
     if (!enabled()) return false;
     client = client || window.supabase.createClient(C.url, C.anonKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
-    client.auth.onAuthStateChange((ev, sess) => { if (sess) { subscribe(); soon(); } });
+    client.auth.onAuthStateChange((ev, sess) => { st.logged = !!sess; renderSync(); if (sess) { subscribe(); soon(); } });
     $('connect').hidden = true; $('connectGraph').hidden = true; $('connectSb').hidden = false;
-    if (await session()) { $('connectSb').textContent = 'Sair'; await subscribe(); await load(); }
+    renderSync();
+    if (await session()) { st.logged = true; $('connectSb').textContent = 'Sair'; renderSync(); await subscribe(); await load(); }
     else $('connection').textContent = 'Entre com seu e-mail @kwbrasil.com.br para ler o banco em tempo real.';
     return true;
   }
   async function sendLink(email) {
     if (!/^[^@\s]+@kwbrasil\.com\.br$/i.test(email)) throw Error('Use seu e-mail @kwbrasil.com.br.');
     const { error } = await client.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + location.pathname } });
-    if (error) throw Error(error.message);
+    if (error) {
+      const m = error.message || '';
+      if (error.status === 429 || /rate limit/i.test(m)) throw Error('Limite de e-mails atingido. Aguarde cerca de 1 hora e peça um único link (cada pedido conta). Se persistir, avise o administrador.');
+      if (/signups? not allowed|not allowed/i.test(m)) throw Error('Este e-mail não tem acesso ao painel. Fale com o administrador.');
+      throw Error(m);
+    }
+  }
+  // Acesso alternativo (administrador): e-mail + senha, sem enviar e-mail (não usa a cota de links).
+  async function signInPassword(email, password) {
+    if (!/^[^@\s]+@kwbrasil\.com\.br$/i.test(email)) throw Error('Use seu e-mail @kwbrasil.com.br.');
+    if (!password) throw Error('Informe a senha.');
+    const { error } = await client.auth.signInWithPassword({ email, password });
+    if (error) throw Error(/invalid login/i.test(error.message) ? 'E-mail ou senha incorretos.' : error.message);
+    st.logged = true; $('connectSb').textContent = 'Sair'; await subscribe(); await load();
   }
   async function signOut() { await client.auth.signOut(); location.reload(); }
   async function photoUrl(name) {
@@ -95,5 +131,5 @@ window.SupabaseSource = (() => {
     if (error || !data) return '';
     signed.set(name, { url: data.signedUrl, exp: Date.now() + 3300000 }); return data.signedUrl;
   }
-  return { enabled, start, load, sendLink, signOut, photoUrl, session: () => client && session() };
+  return { enabled, start, load, sendLink, signInPassword, signOut, photoUrl, session: () => client && session() };
 })();

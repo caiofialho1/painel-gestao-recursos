@@ -129,3 +129,11 @@ th:nth-child(4):last-child{width:140px}
 .pd-head{align-items:center}#photoTitle{flex:1;min-width:0}
 .pd-nav{display:flex;align-items:center;gap:8px;margin-left:auto}.pd-nav button{width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-md)}
 .pd-nav button:disabled{opacity:.4;cursor:default}#pdPos{font:var(--text-label);color:var(--ink-muted);min-width:84px;text-align:center;white-space:nowrap}
+
+/* Indicadores de sincronização (banco e SharePoint) */
+.sync-bar{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.sync-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border:1px solid var(--neutral-200);border-radius:999px;background:var(--neutral-0);color:var(--neutral-700);font-size:11px}
+.sync-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--neutral-400)}
+.sync-chip[data-s=ok]{border-color:var(--green-200);background:var(--green-50)}.sync-chip[data-s=ok]::before{background:var(--green-500)}
+.sync-chip[data-s=warn]{border-color:var(--amber-200);background:var(--amber-50)}.sync-chip[data-s=warn]::before{background:var(--amber-500)}
+.sync-chip[data-s=err]{border-color:#f0b4ae;background:#fdf0ee}.sync-chip[data-s=err]::before{background:#c0392b}
