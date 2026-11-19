@@ -137,3 +137,9 @@ th:nth-child(4):last-child{width:140px}
 .sync-chip[data-s=ok]{border-color:var(--green-200);background:var(--green-50)}.sync-chip[data-s=ok]::before{background:var(--green-500)}
 .sync-chip[data-s=warn]{border-color:var(--amber-200);background:var(--amber-50)}.sync-chip[data-s=warn]::before{background:var(--amber-500)}
 .sync-chip[data-s=err]{border-color:#f0b4ae;background:#fdf0ee}.sync-chip[data-s=err]::before{background:#c0392b}
+/* Barra de progresso do "Atualizar agora" */
+.sync-progress{display:flex;align-items:center;gap:8px;flex:1 1 100%;min-width:0;font-size:11px;color:var(--neutral-700)}
+.sync-progress-track{flex:0 1 260px;min-width:120px;height:8px;border-radius:999px;background:var(--neutral-200);overflow:hidden}
+.sync-progress-fill{height:100%;width:0;border-radius:999px;background:var(--green-500);transition:width .6s ease}
+.sync-progress-pct{font-weight:600;font-variant-numeric:tabular-nums;min-width:3.2em;text-align:right}
+.sync-progress-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
