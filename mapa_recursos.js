@@ -229,6 +229,49 @@
     unidade: e.unidade && e.unidade !== 'Sem unidade' ? e.unidade : 'un', situacao: e.situacao || '', vinculo: det['Vínculo'] || '', conservacao: det['Conservação'] || '',
     serie: det['Nº de série'] || '', observacao: det['Observação'] || '', coordenador: e.gestor || '', gestor: e.gerente || '', por: porNome(e.por),
     em: (e.atualizado || e.date) ? fmt(e.atualizado || e.date) : '', lat: e.lat ?? '', lon: e.lon ?? '' }; });
+  // Relatório analítico (exportar_relatorio.js): cada item previsto no PStock com os itens cadastrados ao lado, por CR e equipamento.
+  // Respeita os filtros da tela (coordenador, CR, grupo e busca). Pareamento: 1) mesma TAG/patrimônio/série dentro do CR;
+  // 2) o restante pelo equipamento, consumindo os cadastros até cobrir a quantidade da linha do PStock. Somente leitura.
+  const chave = s => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  window.KW_ANALITICO = () => {
+    const co = $('mCoord').value, crSel = $('mCr').value, g = $('mGroup').value, q = norm($('mSearch').value.trim());
+    const pex = (window.KW_PEX?.itens || []);
+    const obraDe = new Map(BASE.filter(b => b.cr).map(b => [b.cr, b]));
+    const crs = new Set((co || crSel) ? scope(false).crs : [...pex.map(i => i[0]), ...events.map(e => e.cr).filter(Boolean)]);
+    const P = pex.filter(i => crs.has(i[0]) && (!g || i[3] === g) && (!q || norm([i[2], i[1], i[4], i[0], i[3]].join(' ')).includes(q)));
+    const A = events.filter(e => e.cr && crs.has(e.cr) && (!g || canon(e).grupo === g) &&
+      (!q || norm([canon(e).tipo, e.equipamento, e.modelo, e.tag, e.cr, e.obraNome, canon(e).grupo].join(' ')).includes(q)));
+    const ap = e => { const det = e.det || {}; return { e, tipo: canon(e).tipo, grupo: canon(e).grupo, modelo: e.modelo || '', tag: e.tag || '', serie: det['Nº de série'] || '', qtd: qty(e),
+      un: e.unidade && e.unidade !== 'Sem unidade' ? e.unidade : 'un', situacao: e.situacao || '', por: porNome(e.por), em: (e.atualizado || e.date) ? fmt(e.atualizado || e.date) : '', usado: false }; };
+    const porCr = new Map(), no = c => porCr.get(c) || porCr.set(c, { p: [], a: [] }).get(c);
+    P.forEach(i => no(i[0]).p.push({ cr: i[0], desc: i[1], tipo: i[2], grupo: i[3], tag: i[4], pat: i[5], serie: i[6], nf: i[7], qtd: i[8], par: [] }));
+    A.forEach(e => no(e.cr).a.push(ap(e)));
+    const blocos = [];
+    for (const [cr, { p, a }] of porCr) {
+      // 1) TAG / patrimônio / série iguais
+      const idx = new Map();
+      a.forEach(x => [x.tag, x.serie].map(chave).filter(k => k.length >= 3).forEach(k => { (idx.get(k) || idx.set(k, []).get(k)).push(x); }));
+      p.forEach(x => { for (const k of [x.tag, x.pat, x.serie].map(chave).filter(k => k.length >= 3)) { const c = (idx.get(k) || []).find(y => !y.usado); if (c) { c.usado = true; x.par.push(c); x.porTag = true; break; } } });
+      // 2) restante por equipamento
+      const filas = new Map(); a.filter(x => !x.usado).forEach(x => (filas.get(x.tipo) || filas.set(x.tipo, []).get(x.tipo)).push(x));
+      p.forEach(x => { if (x.porTag) return; const f = filas.get(x.tipo) || []; let s = 0; while (f.length && s < x.qtd) { const y = f.shift(); y.usado = true; x.par.push(y); s += y.qtd; } });
+      const sobra = a.filter(x => !x.usado);
+      const ob = obraDe.get(cr) || {}, ev0 = a[0]?.e || {};
+      const tipos = new Map(), blk = (t, gr) => tipos.get(t) || tipos.set(t, { cr, obra: ob.obra || ev0.obraNome || '', uf: ob.uf || ev0.uf || '', coord: ob.gestor || ev0.gestor || '', grupo: gr, tipo: t, pex: 0, app: 0, linhas: [] }).get(t);
+      p.forEach(x => {
+        const b = blk(x.tipo, x.grupo), s = x.par.reduce((t, y) => t + y.qtd, 0); b.pex += x.qtd; b.app += s;
+        const status = x.porTag ? 'Conferido (TAG)' : !x.par.length ? 'Não cadastrado' : s >= x.qtd ? 'Cadastrado' : 'Parcial';
+        const n = Math.max(1, x.par.length);
+        for (let k = 0; k < n; k++) b.linhas.push({ p: k ? null : x, a: x.par[k] || null, status: k ? '' : status });
+      });
+      sobra.forEach(y => { const b = blk(y.tipo, y.grupo); b.app += y.qtd; b.linhas.push({ p: null, a: y, status: 'Cadastrado sem PStock' }); });
+      blocos.push(...tipos.values());
+    }
+    const cmp = (x, y) => (x || '').localeCompare(y || '', 'pt-BR');
+    blocos.sort((x, y) => cmp(x.coord, y.coord) || cmp(x.cr, y.cr) || cmp(x.grupo, y.grupo) || cmp(x.tipo, y.tipo));
+    const f = [co && 'Coordenador: ' + co, crSel && 'CR: ' + crSel, g && 'Grupo: ' + g, q && 'Busca: ' + $('mSearch').value.trim()].filter(Boolean);
+    return { blocos, filtros: f.length ? f.join(' · ') : 'Sem filtros (todos os CRs)', geradoEm: window.KW_PEX?.geradoEm || '', temPex: !!window.KW_PEX };
+  };
   window.renderMapa = function renderMapa() {
     fillSelect('mGroup', events.map(e => canon(e).grupo), 'Todos os grupos');
     fillSelect('mCr', events.map(e => e.cr), 'Todos os CRs');

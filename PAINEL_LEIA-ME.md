@@ -47,3 +47,19 @@ O painel pode ler `BD_Inventario_KW.xlsx` direto do site APP_GestaoDeRecursos, s
 4. Abrir o painel por essa URL e clicar em **Entrar com Microsoft**. A conexão é lembrada e atualiza a cada 30 s.
 
 Com `clientId` vazio, o painel segue no modo OneDrive. O painel só faz leituras (GET) e não grava nada no SharePoint.
+
+
+## Relatório analítico (PStock × cadastrado)
+
+Na aba Mapa e inventário, abaixo de **Exportar relatório**, o botão **Exportar analítico** gera um Excel que lista todos os itens previstos no PStock, conforme os filtros (coordenador, CR, grupo e busca), com os itens cadastrados no app ao lado. Escolha **abas por Coordenador, CR ou aba única**. A planilha **Resumo** traz PStock, cadastrado, diferença e aderência por CR.
+
+Pareamento (por CR): 1) mesma TAG, patrimônio ou série; 2) o restante pelo equipamento, consumindo os cadastros até cobrir a quantidade da linha do PStock. Status: Conferido (TAG), Cadastrado, Parcial, Não cadastrado e Cadastrado sem PStock. Somente leitura; o PStock é apenas referência.
+
+O botão **PDF por coordenador** abre a impressão do navegador (escolha "Salvar como PDF") com uma seção por coordenador, cada uma em página nova (A4 paisagem), conforme os filtros.
+
+## Referência PEX (PStock): o que fica de fora
+`python pstock/gerar_pex.py` gera `painel/pex_pstock.js` sem recursos de TI e sem itens de alta rotatividade/desgaste:
+- grupo **Comunicação e TI** inteiro e **Materiais e acessórios**;
+- tipos **Broca / bit** e **Lima / escova / raspador**;
+- consumíveis por descrição (luva, fita, tapume, corrente plástica, protetor de corda, mola, abraçadeira, disco, lixa, eletrodo, arame, bocal, filtro etc.).
+Os critérios ficam no topo de `pstock/gerar_pex.py` (`GRUPOS_FORA`, `TIPOS_FORA`, `RE_CONSUMIVEL`). Em 23/11/2026: 3.785 → 2.687 itens (1.098 removidos).

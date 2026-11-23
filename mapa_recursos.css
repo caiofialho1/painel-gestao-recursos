@@ -175,5 +175,6 @@ tr.grp th .av{width:20px;height:20px}
 
 /* Exportar relatório */
 .exp-wrap{display:block}
+.exp-an{margin-top:8px;display:flex;flex-direction:column;gap:4px}.exp-an label{display:flex;flex-direction:column;gap:2px;font-size:11px}.exp-an select{font-size:12px}
 .exp-wrap p{margin:4px 2px 0;font-size:11px;color:#65776b}.exp-wrap p:empty{display:none}
 @media print{.exp-wrap{display:none}}
