@@ -190,3 +190,6 @@ tr.grp th .av{width:20px;height:20px}
 .hh-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;word-break:normal}
 .bar-row{height:50px;box-sizing:border-box;overflow:hidden}
 .bar-label{height:18px}.bar-label span,.bar-label strong,.bar-sub{white-space:nowrap}.bar-sub{overflow:hidden;text-overflow:ellipsis}
+/* A barra de aderência usa a cor da faixa (o kw_ds.css força verde; esta regra é mais específica). */
+.pex-panel .pex-table .cov i b{background:currentColor}
+.pex-panel .pex-table .cov em{font-style:normal}
