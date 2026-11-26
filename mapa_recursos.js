@@ -211,8 +211,13 @@
     // Aderência (inventário ÷ PStock) do maior para o menor; sem PStock vai para o fim.
     const ader = r => r.pex ? r.app / r.pex : -1;
     const list = [...map.values()].sort((a, b) => ader(b) - ader(a) || b.pex - a.pex || b.app - a.app || a.g.localeCompare(b.g, 'pt-BR'));
-    const cell = r => { const d = r.app - r.pex, pct = r.pex ? Math.min(100, r.app / r.pex * 100) : (r.app ? 100 : 0); return `<td class="v-pex">${number.format(r.pex)}</td><td class="v-app">${number.format(r.app)}</td><td class="${d < 0 ? 'v-neg' : 'v-app'}">${d > 0 ? '+' : ''}${number.format(d)}</td><td><span class="cov"><i><b style="width:${pct}%"></b></i>${r.pex ? pct2.format(r.app / r.pex * 100) + '%' : '—'}</span></td>`; };
-    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
+    // Coluna Aderência: barra e % na cor da faixa (>=85% verde, >=50% laranja, abaixo vermelho); sem PStock não há aderência: barra vazia e rótulo neutro.
+    const cell = r => {
+      const d = r.app - r.pex, p = r.pex ? r.app / r.pex * 100 : null, t = tone(p);
+      const rot = p === null ? 'sem PStock' : pct2.format(p) + '%';
+      return `<td class="v-pex">${number.format(r.pex)}</td><td class="v-app">${number.format(r.app)}</td><td class="${d < 0 ? 'v-neg' : 'v-app'}">${d > 0 ? '+' : ''}${number.format(d)}</td><td><span class="cov t-${t}" title="${p !== null && p > 100 ? 'Inventário acima do PStock' : ''}"><i><b style="width:${p === null ? 0 : Math.min(100, p)}%"></b></i><em>${rot}</em></span></td>`;
+    };
+    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row${r.pex ? '' : ' sem-pex'}" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
     const t = list.reduce((s, r) => ({ pex: s.pex + r.pex, app: s.app + r.app }), { pex: 0, app: 0 });
     $('pexTotal').innerHTML = `<tr><th>Total</th>${cell(t)}</tr>`;
     const porRegra = pex.itens.filter(i => crs.has(i[0]) && i[9] === 0).length, total = pex.itens.filter(i => crs.has(i[0])).length;
