@@ -63,3 +63,15 @@ O botão **PDF por coordenador** abre a impressão do navegador (escolha "Salvar
 - tipos **Broca / bit** e **Lima / escova / raspador**;
 - consumíveis por descrição (luva, fita, tapume, corrente plástica, protetor de corda, mola, abraçadeira, disco, lixa, eletrodo, arame, bocal, filtro etc.).
 Os critérios ficam no topo de `pstock/gerar_pex.py` (`GRUPOS_FORA`, `TIPOS_FORA`, `RE_CONSUMIVEL`). Em 23/11/2026: 3.785 → 2.687 itens (1.098 removidos).
+
+### Atualização 26/11/2026: EPI/EPC e consumíveis
+Também ficam fora do PEX: o grupo **Segurança e proteção coletiva** inteiro (extintor, cone, bloqueio/LOTO, sinalização, manta/lona antichama, rede de segurança etc.), EPI e EPC em outros grupos (`RE_EPI_EPC`: guarda-corpo, lava-olhos, cinto/talabarte/trava-quedas, respirador, protetor auricular, botina, colete etc.) e mais consumíveis (fita/corrente/pedestal zebrado, placa de andaime, lona, serra copo e seu suporte, espátula, arco de serra, soquete de bit, lima, ponta/jogo de bits, macho de rosca, giz de linha). Resultado: 2.687 → 2.582 itens (a referência já vinha com a PStock de 10/11/2026). `painel/pex_pstock.js` é gerado e está no `.gitignore`; rode o script para atualizar o painel.
+
+### Nomenclatura canônica (app é a referência)
+O nome do equipamento do PStock é levado ao tipo do catálogo do app (aba Tipos de `BD_Inventario_KW.xlsx`), para a comparação por equipamento fechar:
+- `pstock/classificar_pex.py` (`REGRAS`, específicas primeiro) converte cada descrição do PStock no tipo do app (ex.: "DETECTOR XL 4 GASE / KA42…" e "DETECTOR DE XL 4 GASE" → *Detector portátil de gás*; bomba d'água → *Motobomba*; ventilador/exaustor → *Exaustor / ventilador industrial*; tubo de andaime → *Tubo galvanizado*). Quando o app não tem tipo equivalente, fica um nome genérico (ex.: *Ferramenta elétrica / pneumática*).
+- Cadastros "Outro equipamento" do app usam as mesmas regras (pelo modelo/observação); os demais tipos do app entram como estão, sem tradução.
+- Para novo equipamento: acrescente a regra em `REGRAS` e rode `python pstock/gerar_pex.py`.
+
+### Itens que ficam no PEX apesar das exclusões
+`pstock/itens_manter_pex.lst` (descrição exata) tem prioridade sobre todas as exclusões: ferramentas e equipamentos elétricos, pneumáticos e hidráulicos que haviam sido removidos (chaves de impacto elétricas/a bateria, martelos demoledores, talhas elétrica/pneumática, ar-condicionado, compressor, bomba, máquinas de solda, locações de esmerilhadeira etc.). `pstock/PEX_removidos.xlsx` lista tudo o que foi removido, com o motivo.
