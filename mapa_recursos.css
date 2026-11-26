@@ -57,8 +57,8 @@ tr.grp th::before{content:"▾ ";color:#4a946b}tr.grp.closed th::before{content:
 .pex-table td+td{border-left:1px solid #dce4df}
 .pex-table tfoot td,.pex-table tfoot th{background:#edf5ef;color:#163f32;font-weight:600;border-top:2px solid #b8cbbf;text-align:right;height:auto;padding:4px 8px;font-size:11px}.pex-table tfoot th{text-align:left}
 .neg{color:#c52f32}.pos{color:#163f32}
-.cov{display:flex;align-items:center;gap:8px;justify-content:flex-end}.cov i{display:block;width:84px;height:6px;background:#e6ece8;border-radius:3px;overflow:hidden;flex:none}.cov b{display:block;height:100%;background:currentColor;border-radius:3px}
-.cov em{font-style:normal;font-weight:600;min-width:74px;text-align:right;font-variant-numeric:tabular-nums;color:#163f32}.cov.t-na em{font-weight:400;color:#5b6d62}
+.cov{display:flex;align-items:center;gap:8px;justify-content:flex-end}.cov i{display:block;width:60px;height:6px;background:#e6ece8;border-radius:3px;overflow:hidden;flex:none}.cov b{display:block;height:100%;background:currentColor;border-radius:3px}
+.cov em{font-style:normal;font-weight:600;min-width:66px;text-align:right;font-variant-numeric:tabular-nums;color:#163f32}.cov.t-na em{font-weight:400;color:#5b6d62}
 .sem-pex td{color:#5b6d62}.sem-pex td:first-child{font-style:italic}
 .pex-note{margin:0;padding:8px 14px;font-size:10px;color:#7c8c80;line-height:1.5;border-top:1px solid #edf1ee}
 .map-filters select{min-width:130px}
@@ -180,3 +180,13 @@ tr.grp th .av{width:20px;height:20px}
 .exp-an{margin-top:8px;display:flex;flex-direction:column;gap:4px}.exp-an label{display:flex;flex-direction:column;gap:2px;font-size:11px}.exp-an select{font-size:12px}
 .exp-wrap p{margin:4px 2px 0;font-size:11px;color:#65776b}.exp-wrap p:empty{display:none}
 @media print{.exp-wrap{display:none}}
+
+/* Altura de linha estática: nada quebra de linha; nomes longos ganham reticências (o nome completo fica no title). */
+.pex-table td,.pex-table th{white-space:nowrap}
+.pex-table tbody td{height:28px;padding-top:0;padding-bottom:0;vertical-align:middle}
+.pex-table td:first-child{width:100%;min-width:140px;max-width:1px;overflow:hidden;text-overflow:ellipsis}
+.pex-table .cov{height:28px}
+.hh-row{height:26px;padding:0;align-items:center}
+.hh-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;word-break:normal}
+.bar-row{height:50px;box-sizing:border-box;overflow:hidden}
+.bar-label{height:18px}.bar-label span,.bar-label strong,.bar-sub{white-space:nowrap}.bar-sub{overflow:hidden;text-overflow:ellipsis}

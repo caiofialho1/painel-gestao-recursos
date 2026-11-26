@@ -217,7 +217,7 @@
       const rot = p === null ? 'sem PStock' : pct2.format(p) + '%';
       return `<td class="v-pex">${number.format(r.pex)}</td><td class="v-app">${number.format(r.app)}</td><td class="${d < 0 ? 'v-neg' : 'v-app'}">${d > 0 ? '+' : ''}${number.format(d)}</td><td><span class="cov t-${t}" title="${p !== null && p > 100 ? 'Inventário acima do PStock' : ''}"><i><b style="width:${p === null ? 0 : Math.min(100, p)}%"></b></i><em>${rot}</em></span></td>`;
     };
-    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row${r.pex ? '' : ' sem-pex'}" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
+    $('pexRows').innerHTML = list.map(r => `<tr class="pex-row${r.pex ? '' : ' sem-pex'}" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td title="${escape(r.g)}">${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
     const t = list.reduce((s, r) => ({ pex: s.pex + r.pex, app: s.app + r.app }), { pex: 0, app: 0 });
     $('pexTotal').innerHTML = `<tr><th>Total</th>${cell(t)}</tr>`;
     const porRegra = pex.itens.filter(i => crs.has(i[0]) && i[9] === 0).length, total = pex.itens.filter(i => crs.has(i[0])).length;
