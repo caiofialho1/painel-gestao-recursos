@@ -189,7 +189,7 @@
     const crs = sc.crs, map = new Map(), row = g => map.get(g) || map.set(g, { g, pex: 0, app: 0 }).get(g);
     (window.KW_PEX?.itens || []).filter(i => crs.has(i[0]) && (!sc.g || i[3] === sc.g)).forEach(i => { row(i[3]).pex += i[8]; });
     events.filter(e => crs.has(e.cr) && (!sc.g || canon(e).grupo === sc.g)).forEach(e => { row(canon(e).grupo).app += qty(e); });
-    const list = [...map.values()].sort((a, b) => b.pex - a.pex || b.app - a.app);
+    const list = [...map.values()].sort((a, b) => (b.pex ? b.app / b.pex : -1) - (a.pex ? a.app / a.pex : -1) || b.pex - a.pex || b.app - a.app);
     if (!list.length) { el.innerHTML = '<p class="muted">Sem dados.</p>'; return; }
     // Cada grupo: PEX = 100% (referência); cadastrado = % do PEX do próprio grupo (aderência). Rótulos em quantidade.
     const max = 100, ticks = [0, 25, 50, 75, 100];
@@ -208,7 +208,9 @@
     const map = new Map(), row = g => map.get(g) || map.set(g, { g, pex: 0, app: 0 }).get(g);
     pex.itens.filter(i => crs.has(i[0])).forEach(i => { row(i[idx]).pex += i[8] });
     events.filter(e => crs.has(e.cr)).forEach(e => { row(mode === 'equip' ? canon(e).tipo : canon(e).grupo).app += qty(e) });
-    const list = [...map.values()].sort((a, b) => b.pex - a.pex || b.app - a.app || a.g.localeCompare(b.g, 'pt-BR'));
+    // Aderência (inventário ÷ PStock) do maior para o menor; sem PStock vai para o fim.
+    const ader = r => r.pex ? r.app / r.pex : -1;
+    const list = [...map.values()].sort((a, b) => ader(b) - ader(a) || b.pex - a.pex || b.app - a.app || a.g.localeCompare(b.g, 'pt-BR'));
     const cell = r => { const d = r.app - r.pex, pct = r.pex ? Math.min(100, r.app / r.pex * 100) : (r.app ? 100 : 0); return `<td class="v-pex">${number.format(r.pex)}</td><td class="v-app">${number.format(r.app)}</td><td class="${d < 0 ? 'v-neg' : 'v-app'}">${d > 0 ? '+' : ''}${number.format(d)}</td><td><span class="cov"><i><b style="width:${pct}%"></b></i>${r.pex ? pct2.format(r.app / r.pex * 100) + '%' : '—'}</span></td>`; };
     $('pexRows').innerHTML = list.map(r => `<tr class="pex-row" data-pk="${escape(r.g)}" title="Ver itens do PStock"><td>${escape(r.g)}</td>${cell(r)}</tr>`).join('') || '<tr><td colspan="5" class="muted">Sem dados.</td></tr>';
     const t = list.reduce((s, r) => ({ pex: s.pex + r.pex, app: s.app + r.app }), { pex: 0, app: 0 });
