@@ -177,10 +177,10 @@
       <div class="kpi"><small>CRs com cadastro</small><b>${withApp} <span class="of">/ ${crs.length}</span></b><em>CRs com PStock ou inventário</em></div>`;
     const ufs = new Map();
     crs.forEach(r => { const u = ufs.get(r.uf) || ufs.set(r.uf, { label: r.uf, pex: 0, app: 0 }).get(r.uf); u.pex += r.pex; u.app += r.app; });
-    // Classificação pela aderência (maior primeiro); quem não tem PStock não tem aderência calculável e vai para o fim.
-    const porAderencia = (a, b) => (!!b.pex - !!a.pex) || (b.pct ?? 0) - (a.pct ?? 0) || b.pex - a.pex || b.app - a.app;
-    bars(fin([...ufs.values()]).sort(porAderencia), $('kpiCr'), false);
-    bars(fin([...co.values()]).sort(porAderencia), $('kpiCoord'), true);
+    // Gráficos: só itens com PStock (sem PStock não há aderência a calcular), do maior para o menor percentual.
+    const porAderencia = (a, b) => (b.pct ?? 0) - (a.pct ?? 0) || b.pex - a.pex || b.app - a.app;
+    bars(fin([...ufs.values()]).filter(r => r.pex > 0).sort(porAderencia), $('kpiCr'), false);
+    bars(fin([...co.values()]).filter(r => r.pex > 0).sort(porAderencia), $('kpiCoord'), true);
     histograma(sc);
   }
   // Histograma por grupo de equipamentos: eixo em % do total de cada série (PEX e cadastrado); rótulos em quantidade.
@@ -189,7 +189,7 @@
     const crs = sc.crs, map = new Map(), row = g => map.get(g) || map.set(g, { g, pex: 0, app: 0 }).get(g);
     (window.KW_PEX?.itens || []).filter(i => crs.has(i[0]) && (!sc.g || i[3] === sc.g)).forEach(i => { row(i[3]).pex += i[8]; });
     events.filter(e => crs.has(e.cr) && (!sc.g || canon(e).grupo === sc.g)).forEach(e => { row(canon(e).grupo).app += qty(e); });
-    const list = [...map.values()].sort((a, b) => (b.pex ? b.app / b.pex : -1) - (a.pex ? a.app / a.pex : -1) || b.pex - a.pex || b.app - a.app);
+    const list = [...map.values()].filter(r => r.pex > 0).sort((a, b) => b.app / b.pex - a.app / a.pex || b.pex - a.pex || b.app - a.app);
     if (!list.length) { el.innerHTML = '<p class="muted">Sem dados.</p>'; return; }
     // Cada grupo: PEX = 100% (referência); cadastrado = % do PEX do próprio grupo (aderência). Rótulos em quantidade.
     const max = 100, ticks = [0, 25, 50, 75, 100];
