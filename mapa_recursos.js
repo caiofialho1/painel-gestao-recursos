@@ -177,8 +177,10 @@
       <div class="kpi"><small>CRs com cadastro</small><b>${withApp} <span class="of">/ ${crs.length}</span></b><em>CRs com PStock ou inventário</em></div>`;
     const ufs = new Map();
     crs.forEach(r => { const u = ufs.get(r.uf) || ufs.set(r.uf, { label: r.uf, pex: 0, app: 0 }).get(r.uf); u.pex += r.pex; u.app += r.app; });
-    bars(fin([...ufs.values()]).sort((a, b) => b.pex - a.pex || b.app - a.app), $('kpiCr'), false);
-    bars(fin([...co.values()]).sort((a, b) => b.pex - a.pex || b.app - a.app), $('kpiCoord'), true);
+    // Classificação pela aderência (maior primeiro); quem não tem PStock não tem aderência calculável e vai para o fim.
+    const porAderencia = (a, b) => (!!b.pex - !!a.pex) || (b.pct ?? 0) - (a.pct ?? 0) || b.pex - a.pex || b.app - a.app;
+    bars(fin([...ufs.values()]).sort(porAderencia), $('kpiCr'), false);
+    bars(fin([...co.values()]).sort(porAderencia), $('kpiCoord'), true);
     histograma(sc);
   }
   // Histograma por grupo de equipamentos: eixo em % do total de cada série (PEX e cadastrado); rótulos em quantidade.
